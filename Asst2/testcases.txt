@@ -1,0 +1,269 @@
+testcases.txt
+Timur Misirpashayev
+
+1. 
+
+melville.txt: Call me Ishmael. Some years ago -- never mind how long precisely -- having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people's hats off -- then, I account it high time to get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the ocean with me.
+
+twain.txt: You don't know about me, without you have read a book by the name of "The Adventures of Tom Sawyer," but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly. There was things which he stretched, but mainly he told the truth. That is nothing. I never seen anybody but lied, one time or another, without it was Aunt Polly, or the widow, or maybe Mary. Aunt Polly -- Tom's Aunt Polly, she is -- and Mary, and the Widow Douglas, is all told about in that book -- which is mostly a true book; with some stretchers, as I said before.
+
+dick.txt: A merry little surge of electricity piped by automatic alarm from the mood organ beside his bed awakened Rick Deckard. Surprised -- it always surprised him to find himself awake without prior notice -- he rose from the bed, stood up in his multicolored pajamas, and stretched. Now, in her bed, his wife Iran opened her gray unmerry eyes, blinked, then groaned and shut her eyes again.
+
+Description: I place these three excerpts in a single directory called "novels". Here is the output:
+
+tm719@cheese:~/Asst2$ ./detector novels
+0.234988 "novels/dick.txt" and "novels/twain.txt"
+0.223547 "novels/dick.txt" and "novels/melville.txt"
+0.189581 "novels/twain.txt" and "novels/melville.txt"
+
+---------------------------------------------------------------------------
+2.
+
+Description: Now, melville.txt is the only file in the "novels" directory. My program prints an error message to indicate that the analysis cannot be done.
+
+tm719@cheese:~/Asst2$ ./detector novels
+ERROR: Cannot perform analysis on a single file.
+
+----------------------------------------------------------------------------
+3.
+
+Description: If we remove melville.txt, the "novels" directory no longer contains any files.
+
+tm719@cheese:~/Asst2$ ./detector novels
+ERROR: No files were found.
+
+----------------------------------------------------------------------------
+4.
+
+Description: Now, I will add the three files back to the "novels" directory, but remove read privileges from melville.txt. My program prints a warning and performs the analysis on the remaining files.
+
+tm719@cheese:~/Asst2$ ./detector ./novels
+WARNING: ./novels/melville.txt could not be opened.
+0.234988 "./novels/dick.txt" and "./novels/twain.txt"
+
+----------------------------------------------------------------------------
+5.
+
+Description: Here, I give the program a file as a starting point.
+
+tm719@cheese:~/Asst2$ ./detector ./novels/dick.txt
+ERROR: ./novels/dick.txt is not a valid directory.
+
+----------------------------------------------------------------------------
+6.
+
+Description: This is the same analysis as in test case 1, but I have included the file emptyFile.txt, which doesn't contain anything.
+
+tm719@cheese:~/Asst2$ ./detector ./novels
+0.150515 "./novels/emptyFile.txt" and "./novels/dick.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/twain.txt"
+0.234988 "./novels/dick.txt" and "./novels/twain.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/melville.txt"
+0.223547 "./novels/dick.txt" and "./novels/melville.txt"
+0.189581 "./novels/twain.txt" and "./novels/melville.txt"
+
+----------------------------------------------------------------------------
+7.
+
+Description: Here, I run the analysis on a directory that contains the "novels" directory, Asst2.c, the detector executable, and the Makefile for this assignment.
+
+tm719@cheese:~/Asst2$ ./detector .
+0.150515 "./novels/emptyFile.txt" and "./Makefile"
+0.150515 "./novels/emptyFile.txt" and "./detector"
+0.301030 "./Makefile" and "./detector"
+0.150515 "./novels/emptyFile.txt" and "./novels/dick.txt"
+0.301030 "./Makefile" and "./novels/dick.txt"
+0.301030 "./detector" and "./novels/dick.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/twain.txt"
+0.294768 "./Makefile" and "./novels/twain.txt"
+0.301030 "./detector" and "./novels/twain.txt"
+0.234988 "./novels/dick.txt" and "./novels/twain.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/melville.txt"
+0.297002 "./Makefile" and "./novels/melville.txt"
+0.301030 "./detector" and "./novels/melville.txt"
+0.223547 "./novels/dick.txt" and "./novels/melville.txt"
+0.189581 "./novels/twain.txt" and "./novels/melville.txt"
+0.150515 "./novels/emptyFile.txt" and "./Asst2.c"
+0.298679 "./Makefile" and "./Asst2.c"
+0.297441 "./detector" and "./Asst2.c"
+0.260710 "./novels/dick.txt" and "./Asst2.c"
+0.252387 "./novels/twain.txt" and "./Asst2.c"
+0.235748 "./novels/melville.txt" and "./Asst2.c"
+
+----------------------------------------------------------------------------
+8.
+
+Description: This test is the same as test case 7, but I have a new directory called "moreFiles", which contains four files:
+
+a.txt: hi there hi there
+yark.txt: cat cat dog doge
+derp.txt: derp derp derp derp derp derp derp derp derp derp derp derp derp 		derp derp 
+z.txt: hi there hi
+
+tm719@cheese:~/Asst2$ ./detector ./
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/z.txt"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/yark.txt"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/a.txt"
+0.301030 "./moreFiles/z.txt" and "./moreFiles/yark.txt"
+0.006238 "./moreFiles/z.txt" and "./moreFiles/a.txt"
+0.301030 "./moreFiles/a.txt" and "./moreFiles/yark.txt"
+0.150515 "./novels/emptyFile.txt" and "./Makefile"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/z.txt" and "./Makefile"
+0.301030 "./moreFiles/yark.txt" and "./Makefile"
+0.301030 "./moreFiles/a.txt" and "./Makefile"
+0.301030 "./moreFiles/z.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/yark.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/a.txt" and "./moreFiles/derp.txt"
+0.150515 "./novels/emptyFile.txt" and "./detector"
+0.301030 "./moreFiles/z.txt" and "./detector"
+0.301030 "./Makefile" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/yark.txt" and "./detector"
+0.301030 "./moreFiles/a.txt" and "./detector"
+0.301030 "./Makefile" and "./detector"
+0.301030 "./moreFiles/derp.txt" and "./detector"
+0.150515 "./novels/emptyFile.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/z.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/a.txt" and "./novels/dick.txt"
+0.301030 "./Makefile" and "./novels/dick.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/dick.txt"
+0.301030 "./detector" and "./novels/dick.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/twain.txt"
+0.291984 "./moreFiles/z.txt" and "./novels/twain.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/twain.txt"
+0.291199 "./moreFiles/a.txt" and "./novels/twain.txt"
+0.294768 "./Makefile" and "./novels/twain.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/twain.txt"
+0.301030 "./detector" and "./novels/twain.txt"
+0.234988 "./novels/dick.txt" and "./novels/twain.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/melville.txt"
+0.295466 "./moreFiles/z.txt" and "./novels/melville.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/melville.txt"
+0.295037 "./moreFiles/a.txt" and "./novels/melville.txt"
+0.297002 "./Makefile" and "./novels/melville.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/melville.txt"
+0.301030 "./detector" and "./novels/melville.txt"
+0.223547 "./novels/dick.txt" and "./novels/melville.txt"
+0.189581 "./novels/twain.txt" and "./novels/melville.txt"
+0.150515 "./novels/emptyFile.txt" and "./Asst2.c"
+0.300069 "./moreFiles/z.txt" and "./Asst2.c"
+0.301030 "./moreFiles/yark.txt" and "./Asst2.c"
+0.300016 "./moreFiles/a.txt" and "./Asst2.c"
+0.298679 "./Makefile" and "./Asst2.c"
+0.301030 "./moreFiles/derp.txt" and "./Asst2.c"
+0.297441 "./detector" and "./Asst2.c"
+0.260710 "./novels/dick.txt" and "./Asst2.c"
+0.252387 "./novels/twain.txt" and "./Asst2.c"
+0.235748 "./novels/melville.txt" and "./Asst2.c"
+
+----------------------------------------------------------------------------
+9.
+
+Description: Now, I add a directory subDir1, which contains another directory subDir2, which contains the file hiddenFile.txt.
+
+hiddenFile.txt: This file is hard to reach.
+
+tm719@cheese:~/Asst2$ ./detector .
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/z.txt"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/a.txt"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/yark.txt"
+0.150515 "./novels/emptyFile.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.006238 "./moreFiles/z.txt" and "./moreFiles/a.txt"
+0.301030 "./moreFiles/z.txt" and "./moreFiles/yark.txt"
+0.301030 "./moreFiles/yark.txt" and "./moreFiles/a.txt"
+0.301030 "./moreFiles/z.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.301030 "./moreFiles/a.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.301030 "./moreFiles/yark.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.150515 "./novels/emptyFile.txt" and "./Makefile"
+0.150515 "./novels/emptyFile.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/z.txt" and "./Makefile"
+0.301030 "./moreFiles/a.txt" and "./Makefile"
+0.301030 "./moreFiles/yark.txt" and "./Makefile"
+0.301030 "./moreFiles/z.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/a.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/yark.txt" and "./moreFiles/derp.txt"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./Makefile"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./moreFiles/derp.txt"
+0.150515 "./novels/emptyFile.txt" and "./detector"
+0.301030 "./moreFiles/z.txt" and "./detector"
+0.301030 "./Makefile" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/a.txt" and "./detector"
+0.301030 "./moreFiles/yark.txt" and "./detector"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./detector"
+0.301030 "./Makefile" and "./detector"
+0.301030 "./moreFiles/derp.txt" and "./detector"
+0.150515 "./novels/emptyFile.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/z.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/a.txt" and "./novels/dick.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/dick.txt"
+0.289828 "./subDir1/subDir2/hiddenFile.txt" and "./novels/dick.txt"
+0.301030 "./Makefile" and "./novels/dick.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/dick.txt"
+0.301030 "./detector" and "./novels/dick.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/twain.txt"
+0.291984 "./moreFiles/z.txt" and "./novels/twain.txt"
+0.291199 "./moreFiles/a.txt" and "./novels/twain.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/twain.txt"
+0.280430 "./subDir1/subDir2/hiddenFile.txt" and "./novels/twain.txt"
+0.294768 "./Makefile" and "./novels/twain.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/twain.txt"
+0.301030 "./detector" and "./novels/twain.txt"
+0.234988 "./novels/dick.txt" and "./novels/twain.txt"
+0.150515 "./novels/emptyFile.txt" and "./novels/melville.txt"
+0.295466 "./moreFiles/z.txt" and "./novels/melville.txt"
+0.295037 "./moreFiles/a.txt" and "./novels/melville.txt"
+0.301030 "./moreFiles/yark.txt" and "./novels/melville.txt"
+0.263299 "./subDir1/subDir2/hiddenFile.txt" and "./novels/melville.txt"
+0.297002 "./Makefile" and "./novels/melville.txt"
+0.301030 "./moreFiles/derp.txt" and "./novels/melville.txt"
+0.301030 "./detector" and "./novels/melville.txt"
+0.223547 "./novels/dick.txt" and "./novels/melville.txt"
+0.189581 "./novels/twain.txt" and "./novels/melville.txt"
+0.150515 "./novels/emptyFile.txt" and "./Asst2.c"
+0.300069 "./moreFiles/z.txt" and "./Asst2.c"
+0.300016 "./moreFiles/a.txt" and "./Asst2.c"
+0.301030 "./moreFiles/yark.txt" and "./Asst2.c"
+0.273758 "./subDir1/subDir2/hiddenFile.txt" and "./Asst2.c"
+0.298679 "./Makefile" and "./Asst2.c"
+0.301030 "./moreFiles/derp.txt" and "./Asst2.c"
+0.297441 "./detector" and "./Asst2.c"
+0.260710 "./novels/dick.txt" and "./Asst2.c"
+0.252387 "./novels/twain.txt" and "./Asst2.c"
+0.235748 "./novels/melville.txt" and "./Asst2.c"
+
+----------------------------------------------------------------------------
+10.
+
+Description: The same as the previous test case, except I take away "novels" read privileges.
+
+tm719@cheese:~/Asst2$ ./detector .
+WARNING: ./novels/ could not be opened.
+0.301030 "./moreFiles/z.txt" and "./moreFiles/yark.txt"
+0.006238 "./moreFiles/z.txt" and "./moreFiles/a.txt"
+0.301030 "./moreFiles/a.txt" and "./moreFiles/yark.txt"
+0.301030 "./moreFiles/z.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.301030 "./moreFiles/yark.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.301030 "./moreFiles/a.txt" and "./subDir1/subDir2/hiddenFile.txt"
+0.301030 "./moreFiles/z.txt" and "./Makefile"
+0.301030 "./moreFiles/yark.txt" and "./Makefile"
+0.301030 "./moreFiles/a.txt" and "./Makefile"
+0.301030 "./moreFiles/z.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/yark.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/a.txt" and "./moreFiles/derp.txt"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./Makefile"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/z.txt" and "./detector"
+0.301030 "./Makefile" and "./moreFiles/derp.txt"
+0.301030 "./moreFiles/yark.txt" and "./detector"
+0.301030 "./moreFiles/a.txt" and "./detector"
+0.301030 "./subDir1/subDir2/hiddenFile.txt" and "./detector"
+0.301030 "./Makefile" and "./detector"
+0.301030 "./moreFiles/derp.txt" and "./detector"
+0.300068 "./moreFiles/z.txt" and "./Asst2.c"
+0.301030 "./moreFiles/yark.txt" and "./Asst2.c"
+0.300015 "./moreFiles/a.txt" and "./Asst2.c"
+0.273723 "./subDir1/subDir2/hiddenFile.txt" and "./Asst2.c"
+0.298675 "./Makefile" and "./Asst2.c"
+0.301030 "./moreFiles/derp.txt" and "./Asst2.c"
+0.297436 "./detector" and "./Asst2.c"
