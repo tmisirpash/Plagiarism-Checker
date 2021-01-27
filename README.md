@@ -1,0 +1,3 @@
+# Plagiarism-Checker
+
+![](detector.gif)
